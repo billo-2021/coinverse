@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "projects": {
+    "coinverse-web": {
+      "projectType": "application",
+      "root": "apps/coinverse-web",
+      "sourceRoot": "apps/coinverse-web/src",
+      "prefix": "coinverse",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/coinverse-web",
+            "index": "apps/coinverse-web/src/index.html",
+            "main": "apps/coinverse-web/src/main.ts",
+            "polyfills": "apps/coinverse-web/src/polyfills.ts",
+            "tsConfig": "apps/coinverse-web/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/coinverse-web/src/favicon.ico",
+              "apps/coinverse-web/src/assets"
+            ],
+            "styles": ["apps/coinverse-web/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/coinverse-web/src/environments/environment.ts",
+                  "with": "apps/coinverse-web/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "coinverse-web:build:production"
+            },
+            "development": {
+              "browserTarget": "coinverse-web:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "coinverse-web:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/coinverse-web/src/**/*.ts",
+              "apps/coinverse-web/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/coinverse-web"],
+          "options": {
+            "jestConfig": "apps/coinverse-web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "coinverse-web-e2e": {
+      "root": "apps/coinverse-web-e2e",
+      "sourceRoot": "apps/coinverse-web-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/coinverse-web-e2e/cypress.json",
+            "devServerTarget": "coinverse-web:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "coinverse-web:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/coinverse-web-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["coinverse-web"]
+    }
+  }
+}
