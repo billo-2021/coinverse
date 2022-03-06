@@ -1,6 +1,58 @@
 {
   "version": 1,
   "projects": {
+    "coinverse-api": {
+      "root": "apps/coinverse-api",
+      "sourceRoot": "apps/coinverse-api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/coinverse-api",
+            "main": "apps/coinverse-api/src/main.ts",
+            "tsConfig": "apps/coinverse-api/tsconfig.app.json",
+            "assets": ["apps/coinverse-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/coinverse-api/src/environments/environment.ts",
+                  "with": "apps/coinverse-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "coinverse-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/coinverse-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/coinverse-api"],
+          "options": {
+            "jestConfig": "apps/coinverse-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "coinverse-web": {
       "projectType": "application",
       "root": "apps/coinverse-web",
