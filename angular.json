@@ -1,6 +1,98 @@
 {
   "version": 1,
   "projects": {
+    "api-common": {
+      "root": "libs/api/common",
+      "sourceRoot": "libs/api/common/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/api/common/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/common"],
+          "options": {
+            "jestConfig": "libs/api/common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "api-core-administration": {
+      "root": "libs/api/core/administration",
+      "sourceRoot": "libs/api/core/administration/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/api/core/administration/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/core/administration"],
+          "options": {
+            "jestConfig": "libs/api/core/administration/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "api-core-authentication": {
+      "root": "libs/api/core/authentication",
+      "sourceRoot": "libs/api/core/authentication/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/api/core/authentication/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/core/authentication"],
+          "options": {
+            "jestConfig": "libs/api/core/authentication/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "api-core-prisma": {
+      "root": "libs/api/core/prisma",
+      "sourceRoot": "libs/api/core/prisma/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/api/core/prisma/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/api/core/prisma"],
+          "options": {
+            "jestConfig": "libs/api/core/prisma/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "coinverse-api": {
       "root": "apps/coinverse-api",
       "sourceRoot": "apps/coinverse-api/src",
@@ -71,9 +163,34 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "apps/coinverse-web/src/favicon.ico",
-              "apps/coinverse-web/src/assets"
+              "apps/coinverse-web/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@taiga-ui/icons/src",
+                "output": "assets/taiga-ui/icons"
+              }
             ],
-            "styles": ["apps/coinverse-web/src/styles.scss"],
+            "styles": [
+              "node_modules/@taiga-ui/core/styles/taiga-ui-global.less",
+              "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
+              "apps/coinverse-web/src/styles.scss",
+              "libs/web/features/custom-design-kit/src/lib/assets/styles/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -174,6 +291,133 @@
       },
       "tags": [],
       "implicitDependencies": ["coinverse-web"]
+    },
+    "common": {
+      "root": "libs/common",
+      "sourceRoot": "libs/common/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/common/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/common"],
+          "options": {
+            "jestConfig": "libs/common/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-common": {
+      "projectType": "library",
+      "root": "libs/web/common",
+      "sourceRoot": "libs/web/common/src",
+      "prefix": "coinverse",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/common"],
+          "options": {
+            "jestConfig": "libs/web/common/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/common/src/**/*.ts",
+              "libs/web/common/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-core-administration": {
+      "projectType": "library",
+      "root": "libs/web/core/administration",
+      "sourceRoot": "libs/web/core/administration/src",
+      "prefix": "coinverse",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/core/administration"],
+          "options": {
+            "jestConfig": "libs/web/core/administration/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/core/administration/src/**/*.ts",
+              "libs/web/core/administration/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-features-custom-design-kit": {
+      "projectType": "library",
+      "root": "libs/web/features/custom-design-kit",
+      "sourceRoot": "libs/web/features/custom-design-kit/src",
+      "prefix": "coinverse",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/features/custom-design-kit"],
+          "options": {
+            "jestConfig": "libs/web/features/custom-design-kit/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/features/custom-design-kit/src/**/*.ts",
+              "libs/web/features/custom-design-kit/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-features-menu": {
+      "projectType": "library",
+      "root": "libs/web/features/menu",
+      "sourceRoot": "libs/web/features/menu/src",
+      "prefix": "coinverse",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/features/menu"],
+          "options": {
+            "jestConfig": "libs/web/features/menu/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/features/menu/src/**/*.ts",
+              "libs/web/features/menu/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+    "host": "localhost",
+    "port": 3333,
+    "authentication": {
+        "local": {
+            "usernameField": "email",
+            "passwordfield": "password"
+        },
+        "api-key": {
+            "headerField": "x-api-key",
+            "key": "abcde"
+        },
+        "certificate": {
+            "privateKey": "",
+            "publicKey": ""
+        }
+    },
+    "mysql": {
+        "username": "root",
+        "password": "password",
+        "host": "localhost",
+        "port": "3306"
+    }
+}

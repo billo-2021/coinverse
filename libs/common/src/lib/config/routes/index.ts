@@ -1,0 +1,1 @@
+export { routesConfig as apiRoutesConfig } from './api/routes.config';

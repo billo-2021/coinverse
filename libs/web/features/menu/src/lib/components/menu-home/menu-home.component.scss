@@ -1,0 +1,17 @@
+.coinverse-content {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main-content-wrapper {
+    display: flex;
+    flex-grow: 1;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}

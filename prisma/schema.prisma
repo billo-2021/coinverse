@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,200 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Balance {
+  id       Int        @id @default(autoincrement())  @map("wallet_id")
+  customerId     Int?  @map("customer_id")
+  currencyId     Int @map("currency_id")
+  currentBalance Decimal    @db.Decimal(38, 8) @map("current_balance")
+  frozenBalance  Decimal?   @db.Decimal(38, 8) @map("frozen_balance")
+  updateDate     DateTime   @db.DateTime(0)  @map("update_date")
+  insertDate     DateTime   @db.DateTime(0)  @map("insert_date")
+  saveDate       DateTime   @db.DateTime(0)  @map("save_date")
+  currencies      Currency @relation(fields: [currencyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "currency_id")
+  users           User?     @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "customer_id")
+
+  @@index([currencyId], map: "currency_id_idx")
+  @@index([customerId], map: "customer_id_idx")
+  @@map("balances")
+}
+
+model Country {
+  id Int     @id @default(autoincrement()) @map("country_id")
+  name       String @db.VarChar(200)
+  code       String @db.Char(2)
+  phoneCode String @db.VarChar(10)  @map("phone_code")
+  users      User[]
+
+  @@map("countries")
+}
+
+model Currency {
+  id                                                             Int               @id @default(autoincrement()) @map("currency_id")
+  currencyTypeId                                                  Int @map("currency_type_id")
+  code                                                     String            @db.VarChar(20) @map("currency_code")
+  name                                                     String            @db.VarChar(255)  @map("currency_name")
+  description                                              String            @db.VarChar(255)  @map("currency_description")
+  meta                                                              Json?
+  type                                                    CurrencyType    @relation(fields: [currencyTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "currency_type_id")
+  balances                                                          Balance[]
+  currencyToPrimaryCurrencyQuotes   CurrencyQuote[] @relation("currenciesTocurrency_quotes_primary_currency_id")
+  currencyToSecondaryCurrencyQuotes CurrencyQuote[] @relation("currenciesTocurrency_quotes_secondary_currency_id")
+  users                                                             User[]
+
+  @@index([currencyTypeId], map: "currency_type_id_idx")
+  @@map("currencies")
+}
+
+model CurrencyQuote {
+  id                                            Int        @id @default(autoincrement()) @map("currency_quote_id")
+  primaryCurrencyId                                          Int @map("primary_currency_id")
+  secondaryCurrencyId                                        Int @map("secondary_currency_id")
+  quoteDate                                                   DateTime   @db.DateTime(0) @map("quote_date")
+  insertDate                                                  DateTime   @db.DateTime(0) @map("insert_date")
+  updateDate                                                  DateTime   @db.DateTime(0) @map("update_date")
+  saveDate                                                    DateTime   @db.DateTime(0) @map("save_date")
+  currencyQuoteToPrimaryCurrency   Currency @relation("currenciesTocurrency_quotes_primary_currency_id", fields: [primaryCurrencyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "primary_currency_id")
+  currencyQuoteToSecondaryCurrency Currency @relation("currenciesTocurrency_quotes_secondary_currency_id", fields: [secondaryCurrencyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "secondary_currency_id")
+
+  @@index([primaryCurrencyId], map: "primary_currency_id")
+  @@index([secondaryCurrencyId], map: "secondary_currency_id")
+  @@map("currency_quotes")
+}
+
+model CurrencyType {
+  id Int          @id @default(autoincrement()) @map("currency_type_id")
+  name             String      @db.VarChar(45)
+  description      String      @db.VarChar(255)
+  currencies       Currency[]
+
+  @@map("currency_types")
+}
+
+model OrderStatusHistory {
+  id Int            @id @default(autoincrement())  @map("order_status_history_id")
+  orderId                Int @map("order_id")
+  orderStatusId         Int @map("order_status_id")
+  updateDate             DateTime       @db.DateTime(0) @map("update_date")
+  insertDate             DateTime       @db.DateTime(0) @map("insert_date")
+  saveDate               DateTime       @db.DateTime(0) @map("save_date")
+  orders                  Order         @relation(fields: [orderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_status_history_order_id")
+  orderStatuses          OrderStatus @relation(fields: [orderStatusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "order_status_history_order_status_id")
+
+  @@index([orderId], map: "order_id_idx")
+  @@index([orderStatusId], map: "order_status_id_idx")
+  @@map("order_status_history")
+}
+
+model OrderStatus {
+  id      Int                    @id @default(autoincrement()) @map("order_status_id")
+  name                 String                 @db.VarChar(45)
+  description          String                 @db.VarChar(255)
+  orderStatusHistory OrderStatusHistory[]
+  orders               Order[]
+
+  @@map("order_statuses")
+}
+
+model OrderType {
+  id Int      @id @default(autoincrement()) @map("order_type_id")
+  name          String  @db.VarChar(45)
+  description   String  @db.VarChar(255)
+  meta          Json?
+  orders        Order[]
+
+  @@map("order_types")
+}
+
+model Order {
+  id                                     Int                    @id @default(autoincrement()) @map("order_id")
+  orderTypeId                                Int  @map("order_type_id")
+  customerId                                  Int @map("customer_id")
+  orderStatusId                              Int  @map("order_status_id")
+  quantity                                     Decimal                @db.Decimal(38, 8)
+  price                                        Decimal                @db.Decimal(38, 8)
+  expirationDate                              DateTime               @db.DateTime(0) @map("expiration_date")
+  updateDate                                  DateTime?              @db.DateTime(0) @map("update_date")
+  insertDate                                  DateTime               @db.DateTime(0) @map("insert_date")
+  takeProfit                                  Decimal?               @db.Decimal(38, 8)  @map("take_profit")
+  stopLoss                                    Decimal?               @db.Decimal(38, 8)  @map("stop_loss")
+  primaryCurrencyId                          Int  @map("primary_currency_id")
+  secondaryCurrencyId                        Int  @map("secondary_currency_id")
+  marketOder                                  Boolean                @db.Bit(1) @map("market_order")
+  originalOrderId                            Int? @map("original_order_id")
+  users                                        User                  @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_customer_id")
+  order_statuses                               OrderStatus         @relation(fields: [orderStatusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_order_status_id")
+  order_types                                  OrderType            @relation(fields: [orderTypeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_order_type_id")
+  orders                                       Order?                @relation("ordersToorders_original_order_id", fields: [originalOrderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_original_order_id")
+  orderStatusHistory                         OrderStatusHistory[]
+  otherOrders                                 Order[]               @relation("ordersToorders_original_order_id")
+  transactionOrderToTransactionsA Transaction[]         @relation("ordersTotransactions_a_order_id")
+  transactionOrderToTransactionB Transaction[]         @relation("ordersTotransactions_b_order_id")
+
+  @@index([customerId])
+  @@index([orderStatusId])
+  @@index([orderTypeId])
+  @@index([originalOrderId])
+  @@map("orders")
+}
+
+model PaymentType {
+  id Int    @id @default(autoincrement()) @map("payment_type_id")
+  name            String @db.VarChar(45)
+  description     String @db.VarChar(255)
+
+  @@map("payment_types")
+}
+
+model Transaction {
+  transaction_id                         Int      @id @default(autoincrement()) @map("transaction_id")
+  aOrderId                             Int  @map("a_order_id")
+  bOrderId                             Int  @map("b_order_id")
+  aAmount                               Decimal  @db.Decimal(38, 8) @map("a_amount")
+  bAmount                               Decimal  @db.Decimal(38, 8)  @map("b_amount")
+  updateDate                            DateTime @db.DateTime(0) @map("update_date")
+  insertDate                            DateTime @db.DateTime(0) @map("insert_date")
+  saveDate                              DateTime @db.DateTime(0) @map("save_date")
+  transactionToOrderA Order   @relation("ordersTotransactions_a_order_id", fields: [aOrderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_a_order_id")
+  transactionToOrderB Order   @relation("ordersTotransactions_b_order_id", fields: [bOrderId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_b_order_id")
+
+  @@index([aOrderId], map: "a_order_id_idx")
+  @@index([bOrderId], map: "b_order_id_idx")
+  @@map("transactions")
+}
+
+model UserRole {
+  id Int     @id @default(autoincrement())  @map("user_role_id")
+  name         String  @db.VarChar(50)
+  description  String  @db.VarChar(255)
+  users        User[]
+
+  @@map("user_roles")
+}
+
+model User {
+  id               Int         @id @default(autoincrement()) @map("user_id")
+  firstName            String      @db.VarChar(255)  @map("first_name")
+  lastName             String      @db.VarChar(255)  @map("last_name")
+  emailAddress         String      @unique @db.VarChar(255)  @map("email_address")
+  salt              String      @db.VarChar(255)
+  password              String      @db.VarChar(255)
+  roleId               Int @map("role_id")
+  phoneNumber          String      @db.VarChar(20) @map("phone_number")
+  enabled               Boolean             @default(true) @db.Bit(1)
+  countryId            Int  @map("country_id")
+  preferredCurrencyId Int  @map("preferred_currency_id")
+  country             Country  @relation(fields: [countryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "country_id")
+  preferredCurrency           Currency @relation(fields: [preferredCurrencyId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "preferred_currency_id") 
+  role            UserRole  @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_id")
+  balances              Balance[]
+  orders                Order[]
+  createdDate            DateTime @default(now()) @db.DateTime(0) @map("created_date")
+  updatedDate            DateTime @updatedAt @db.DateTime(0) @map("updated_date")
+
+  @@index([countryId], map: "country_id_idx")
+  @@index([preferredCurrencyId], map: "preferred_currency_id_idx")
+  @@index([roleId], map: "role_id_idx")
+  @@map("users")
 }

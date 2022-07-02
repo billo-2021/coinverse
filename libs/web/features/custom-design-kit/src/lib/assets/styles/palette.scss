@@ -1,0 +1,34 @@
+@import './variables.scss';
+
+$coinverse-palette: (
+    50: #e3ebf7,
+    100: #b8ccea,
+    200: #89abdd,
+    300: #5a89cf,
+    400: #366fc4,
+    500: #1356ba,
+    600: #114fb3,
+    700: #0e45ab,
+    800: #0b3ca3,
+    900: #062b94,
+    A100: #c0cdff,
+    A200: #8da5ff,
+    A400: #5a7cff,
+    A700: #4168ff,
+    contrast: (
+        0: $primary-text-light,
+        100: $primary-text-light,
+        200: $primary-text-light,
+        300: $primary-text-light,
+        400: $primary-text-light,
+        500: $primary-text-light,
+        600: $primary-text-light,
+        700: $primary-text-light,
+        800: $primary-text-light,
+        900: $primary-text-light,
+        A100: $primary-text-light,
+        A200: $primary-text-light,
+        A400: $primary-text-light,
+        A700: $primary-text-light,
+    )
+);

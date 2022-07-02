@@ -14,7 +14,25 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@coinverse/api/common": ["libs/api/common/src/index.ts"],
+      "@coinverse/api/core/administration": [
+        "libs/api/core/administration/src/index.ts"
+      ],
+      "@coinverse/api/core/authentication": [
+        "libs/api/core/authentication/src/index.ts"
+      ],
+      "@coinverse/api/core/prisma": ["libs/api/core/prisma/src/index.ts"],
+      "@coinverse/common": ["libs/common/src/index.ts"],
+      "@coinverse/web/common": ["libs/web/common/src/index.ts"],
+      "@coinverse/web/core/administration": [
+        "libs/web/core/administration/src/index.ts"
+      ],
+      "@coinverse/web/features/custom-design-kit": [
+        "libs/web/features/custom-design-kit/src/index.ts"
+      ],
+      "@coinverse/web/features/menu": ["libs/web/features/menu/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

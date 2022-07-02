@@ -1,0 +1,41 @@
+@import './theme.scss';
+
+/* You can add global styles to this file, and also import other style files */
+
+// :root {
+//     @each $color, $shades in $colors {
+//         @each $shade, $value in $shades {
+//             --clr-#{$color}-#{$shade}: $value
+//         }
+//     }
+
+//     @each $screen-size, $font-size in $type-scale {
+//         @if $screen-size == small {
+//             @each $size, $value in $font-size {
+//                 --fs-#{$size}: #{$value};
+//             }
+//         } @else {
+//             @include mq(small) {
+//                 @each $size, $value in $font-size {
+//                     --fs-#{$size}: #{$value};
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// @each $color, $shades in $colors {
+//     @each $shade, $value in $shades {
+//         .text-#{$color}-#{$shade} {
+//             color: $value
+//         }
+//     }
+//     @each $shade, $value in $shades {
+//         .bg-#{$color}-#{$shade} {
+//             color: $value
+//         }
+//     }
+// }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

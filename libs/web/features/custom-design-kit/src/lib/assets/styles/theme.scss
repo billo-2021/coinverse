@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+
+@import './palette.scss';
+
+@include mat.core();
+
+$coinverse-web-primary: mat.define-palette($coinverse-palette);
+$coinverse-web-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+$coinverse-web-warn: mat.define-palette(mat.$red-palette);
+
+$coinverse-web-theme: mat.define-light-theme((
+  color: (
+    primary: $coinverse-web-primary,
+    accent: $coinverse-web-accent,
+    warn: $coinverse-web-warn,
+  )
+));
+
+@include mat.all-component-themes($coinverse-web-theme);
